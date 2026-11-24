@@ -215,6 +215,8 @@
   $('seek').addEventListener('pointercancel', () => { scrubbing = false; });
   $('volume').addEventListener('input', () => { volume = Number($('volume').value); muted = false; setUserVolume(); });
   $('mute').addEventListener('click', () => { muted = !muted; setUserVolume(); });
+  // iPhone Safari has no element fullscreen; hide the button instead of showing an error.
+  if (!document.documentElement.requestFullscreen) $('fullscreen').style.display = 'none';
   $('fullscreen').addEventListener('click', fullscreen);
   document.addEventListener('fullscreenchange', () => {
     $('fullscreen').setAttribute('aria-label', document.fullscreenElement ? 'Exit fullscreen' : 'Enter fullscreen');
