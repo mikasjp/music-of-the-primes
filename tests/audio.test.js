@@ -6,7 +6,7 @@ const path = require('node:path');
 const vm = require('node:vm');
 const sandbox = {window: {}, console, Blob, setTimeout};
 for (const file of ['zeros', 'composition', 'audio']) {
-  vm.runInNewContext(fs.readFileSync(path.join(__dirname, `../js/${file}.js`), 'utf8'), sandbox);
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname, `../public/js/${file}.js`), 'utf8'), sandbox);
 }
 const C = sandbox.window.RM.composition, A = sandbox.window.RM.audio;
 class Param {

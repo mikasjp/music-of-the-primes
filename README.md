@@ -25,10 +25,10 @@ not the exact ζ function.
 
 ## Run locally
 
-No build step and no dependencies. Open `index.html` in a browser, or serve the folder:
+No build step and no dependencies. The site lives in `public/`. Open `public/index.html` in a browser, or serve it:
 
 ```sh
-python3 -m http.server 8000
+python3 -m http.server 8000 --directory public
 ```
 
 Handy URL parameters:
@@ -44,11 +44,19 @@ node tests/composition.test.js && node tests/audio.test.js
 
 ## How it's built
 
-- `js/zeros.js`: the first 1,000 zeros, computed with `mpmath.zetazero`
-- `js/composition.js`: the deterministic timeline shared by audio and visuals
-- `js/audio.js`: the Web Audio graph (live and offline) and the WAV encoder
-- `js/visual.js`: the WebGL2 field, bloom and particles
-- `js/main.js`: UI, HUD and transport
+- `public/js/zeros.js`: the first 1,000 zeros, computed with `mpmath.zetazero`
+- `public/js/composition.js`: the deterministic timeline shared by audio and visuals
+- `public/js/audio.js`: the Web Audio graph (live and offline) and the WAV encoder
+- `public/js/visual.js`: the WebGL2 field, bloom and particles
+- `public/js/main.js`: UI, HUD and transport
+
+## Deploy
+
+Hosted on Cloudflare Workers static assets (`wrangler.jsonc`):
+
+```sh
+npx wrangler deploy
+```
 
 ## Context
 
