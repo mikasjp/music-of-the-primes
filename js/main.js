@@ -28,7 +28,21 @@
     autoHidden.forEach(el => el.removeAttribute('tabindex'));
     autoHidden = [];
   }
+  // Keep the screen awake while playing (Screen Wake Lock API; needs HTTPS, iOS Safari 16.4+).
+  let wakeLock = null;
+  async function updateWakeLock() {
+    if (!('wakeLock' in navigator)) return;
+    try {
+      if (playing && !wakeLock && document.visibilityState === 'visible') {
+        wakeLock = await navigator.wakeLock.request('screen');
+        wakeLock.addEventListener('release', () => { wakeLock = null; });
+      } else if (!playing && wakeLock) {
+        await wakeLock.release(); wakeLock = null;
+      }
+    } catch (_) { wakeLock = null; /* Denied (e.g. low battery); playback continues. */ }
+  }
   function syncTransport() {
+    updateWakeLock();
     $('play-icon').setAttribute('href', playing ? '#icon-pause' : clock() >= 180 ? '#icon-replay' : '#icon-play');
     $('play').setAttribute('aria-label', playing ? 'Pause' : clock() >= 180 ? 'Replay' : 'Play');
     document.body.classList.toggle('playing', playing);
@@ -281,7 +295,8 @@
     else if (event.key.toLowerCase() === 'm') { event.preventDefault(); muted = !muted; setUserVolume(); }
   });
   ['pointermove', 'pointerdown', 'touchstart', 'focusin'].forEach(type => document.addEventListener(type, activity, {passive: true}));
-  document.addEventListener('visibilitychange', () => { lastFrame = 0; activity(); });
+  // The browser drops the wake lock when the tab is hidden; re-acquire it on return.
+  document.addEventListener('visibilitychange', () => { lastFrame = 0; activity(); updateWakeLock(); });
   window.addEventListener('load', renderMath);
 
   // ?capture=1: no live loop; RM.captureFrame(T) renders one deterministic frame (used to make the teaser video).
