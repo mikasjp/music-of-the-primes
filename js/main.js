@@ -282,7 +282,19 @@
   document.addEventListener('visibilitychange', () => { lastFrame = 0; activity(); });
   window.addEventListener('load', renderMath);
 
+  // ?capture=1: no live loop; RM.captureFrame(T) renders one deterministic frame (used to make the teaser video).
+  const captureMode = new URLSearchParams(location.search).get('capture') === '1';
+  if (captureMode) {
+    RM.captureFrame = T => {
+      if (!playing) { playing = true; syncTransport(); }
+      begun = true; document.body.classList.add('begun'); dismissIntro();
+      const bass = 0.45 * C.bassAt(T), high = 0.12;
+      visual.update(T, 1 / 30, true, true, bass, high, T);
+      updateHud(T, true);
+    };
+  }
   function frame(ms) {
+    if (captureMode) return;
     // Cap at ~60 fps (~30 fps on low-power devices): skips every other frame on 120/60 Hz displays.
     if (lastFrame && ms - lastFrame < (RM.lowPower ? 1000 / 40 : 1000 / 90)) { requestAnimationFrame(frame); return; }
     const dt = lastFrame ? (ms - lastFrame) / 1000 : 1 / 60;
