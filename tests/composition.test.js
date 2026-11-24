@@ -59,10 +59,9 @@ for (let i = 0; i < 1000; i++) {
   }
 }
 // Two chorus oscillators are each halved, so their combined bound is baseGain.
-// Each LFO ranges [1-depth, 1]. Bass is 0.065 + 0.018 at maximum swell.
+// Each LFO ranges [1-depth, 1]. There is no bass drone.
 const chordBound = c.voices.reduce((sum, v) => sum + v.baseGain, 0);
-const bassBound = 0.065 + 0.018;
-console.log(`Analytical dry chord bound: ${chordBound.toFixed(6)}; with bass: ${(chordBound + bassBound).toFixed(6)}`);
-console.log(`Before compression/reverb, at master 0.7: ${((chordBound + bassBound) * 0.7).toFixed(6)}. This is not a rendered peak measurement.`);
+console.log(`Analytical dry chord bound: ${chordBound.toFixed(6)}`);
+console.log(`Before compression/reverb, at master 0.7: ${(chordBound * 0.7).toFixed(6)}. This is not a rendered peak measurement.`);
 console.log(`Crossings: T1=${c.crossTime[0].toFixed(6)}, T100=${c.crossTime[99].toFixed(6)}, T1000=${c.crossTime[999].toFixed(6)} s`);
 console.log(`PASS: 18,000 monotonic steps; 1,000 inverses; ${c.primes.length} primes; twins; pitches; envelopes; deterministic parameters.`);

@@ -50,7 +50,7 @@ for (const offset of [0, 2, 15, 72.5, 159.8, 170, 179.95]) {
   const sources = ctx.nodes.filter(n => n.kind === 'oscillator');
   const primes = C.primes.filter(e => e.T >= offset).length;
   const glints = C.glints.filter(e => e.T >= offset).length;
-  assert.equal(sources.length, 302 + 2 * (primes + glints));
+  assert.equal(sources.length, 300 + 2 * (primes + glints)); // 100 voices x 2 chorus + 100 LFOs; no drone
   for (const node of ctx.nodes) {
     if (node.kind === 'oscillator') {
       assert(node.startTime >= 1000);

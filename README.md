@@ -15,7 +15,7 @@ distribution of the primes to the nontrivial zeros ρ = ½ + iγ of ζ(s).
 |---|---|
 | **Pitch** | Each zero γ_k becomes a sine partial at f_k = 130.81 Hz · γ_k / γ_1 (γ_1 ≈ 14.1347 ↦ C3). The spectrum is inharmonic, which makes it sound metallic and otherworldly. |
 | **Loudness** | Riemann's weight A_k = 1 / √(0.25 + γ_k²). Low zeros are warm and high zeros shimmer. |
-| **Space** | The first 100 zeros fade in as the camera passes them. Each voice has its own slow LFO, stereo position and detuned chorus, plus reverb and a C2 drone. |
+| **Space** | The first 100 zeros fade in as the camera passes them. Each voice has its own slow LFO, stereo position and detuned chorus, plus reverb. There is no added drone: everything you hear comes from the zeros and the primes. |
 | **Rhythm** | Every prime p ≤ 1093 strikes an FM bell at T = 1 + 0.15·p seconds. Twin primes (11–13, 17–19, …) are double strikes exactly 0.30 s apart. |
 | **Journey** | Zeros 101–1000 sound as short glints, octave-folded into an audible range, as the view climbs to Im(s) ≈ 1419. |
 

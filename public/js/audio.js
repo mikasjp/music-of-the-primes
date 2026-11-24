@@ -116,19 +116,6 @@
       }
     });
 
-    if (offsetT < C.duration) {
-      const bassEnvelope = gain(1, compressor);
-      bassEnvelope.connect(gain(0.22, reverb));
-      // Sample the pure swell function at 20 Hz, including the exact seek value.
-      bassEnvelope.gain.setValueAtTime(C.bassAt(offsetT), now);
-      for (let T = offsetT + 0.05; T < C.duration; T += 0.05) {
-        bassEnvelope.gain.linearRampToValueAtTime(C.bassAt(T), at(T));
-      }
-      bassEnvelope.gain.linearRampToValueAtTime(C.bassAt(C.duration), end);
-      osc(65.4064, gain(0.065, bassEnvelope), now, end, 0, TAU * 65.4064 * offsetT % TAU);
-      osc(130.8128, gain(0.018, bassEnvelope), now, end, 0, TAU * 130.8128 * offsetT % TAU);
-    }
-
     // Live mode: one-shot nodes are tracked in a Set and released when the carrier ends.
     const live = new Set();
     function fm(event, bus, ratio, index, amplitude, attack, decay) {

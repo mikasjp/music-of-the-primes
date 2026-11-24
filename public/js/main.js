@@ -328,6 +328,8 @@
       for (let i = highStart; i < highEnd; i++) high += bins[i] / 255;
       high /= Math.max(1, highEnd - highStart);
     }
+    // No audible drone any more: keep the visual swell that used to follow it.
+    bass = Math.max(bass, 0.45 * C.bassAt(T));
     visual.update(T, dt, playing, begun, bass, high, ms / 1000);
     if (ms - lastHud > 80) { updateHud(T); lastHud = ms; }
     if (playing && T >= 180) {
