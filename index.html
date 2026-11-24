@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#030507">
+  <meta name="description" content="Hear the hidden structure of the primes in the zeros of the Riemann zeta function. A three-minute generative composition and journey up the critical line through 1,000 of its nontrivial zeros.">
+  <title>Music of the Primes — the Riemann zeta zeros as sound</title>
+  <link rel="canonical" href="https://music-of-the-primes.pages.dev/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Music of the Primes">
+  <meta property="og:url" content="https://music-of-the-primes.pages.dev/">
+  <meta property="og:title" content="Music of the Primes — hear the zeros of the Riemann zeta function">
+  <meta property="og:description" content="A three-minute journey up the critical line: 1,000 nontrivial zeros of ζ(s) become a chord, and the primes ring as bells.">
+  <meta property="og:image" content="https://music-of-the-primes.pages.dev/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Glowing zeros of the Riemann zeta function along the critical line Re(s) = ½">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Music of the Primes — hear the zeros of the Riemann zeta function">
+  <meta name="twitter:description" content="1,000 zeros of ζ(s) as a chord, the primes as bells. A sonification of Riemann’s explicit formula.">
+  <meta name="twitter:image" content="https://music-of-the-primes.pages.dev/og.png">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23030507'/%3E%3Cpath d='M32 8v48' stroke='%233DF5C4' opacity='.4'/%3E%3Ccircle cx='32' cy='23' r='5' fill='%233DF5C4'/%3E%3Ccircle cx='32' cy='43' r='3' fill='%23F54D9A'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script defer src="js/zeros.js"></script>
+  <script defer src="js/composition.js"></script>
+  <script defer src="js/audio.js"></script>
+  <script defer src="js/visual.js"></script>
+  <script defer src="js/main.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+</head>
+<body>
+  <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="icon-play" viewBox="0 0 24 24"><path d="m9 5 11 7-11 7Z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="icon-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14" stroke-width="3"/></symbol>
+    <symbol id="icon-volume" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4ZM17 8c3 2 3 6 0 8M20 5c5 4 5 10 0 14"/></symbol>
+    <symbol id="icon-muted" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4ZM17 9l5 6m0-6-5 6"/></symbol>
+    <symbol id="icon-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 17v4h16v-4"/></symbol>
+    <symbol id="icon-fullscreen" viewBox="0 0 24 24"><path d="M9 4H4v5m11-5h5v5M4 15v5h5m6 0h5v-5"/></symbol>
+    <symbol id="icon-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v1"/></symbol>
+    <symbol id="icon-replay" viewBox="0 0 24 24"><path d="M5 10a8 8 0 1 1 0 5M5 3v7h7"/></symbol>
+  </svg>
+
+  <div class="background" aria-hidden="true"></div>
+  <canvas id="field" aria-hidden="true"></canvas>
+  <canvas id="ruler" aria-hidden="true"></canvas>
+  <div class="readability" aria-hidden="true"></div>
+
+  <header class="masthead chrome">
+    <a class="wordmark" href="#" aria-label="Music of the Primes, open introduction" id="home-link">
+      <span class="brand-glyph" aria-hidden="true">ζ</span>
+      <span><strong>MUSIC OF THE PRIMES</strong><small>Riemann ζ(s) sonification</small></span>
+    </a>
+    <div class="edition mono" aria-hidden="true"><span class="status-dot"></span> RIEMANN · CRITICAL STRIP</div>
+  </header>
+
+  <aside class="hud chrome mono" aria-label="Journey readouts">
+    <div class="hud-coordinate">Im(s) <span class="dim">=</span> <span id="height-readout">0.00</span></div>
+    <div id="zero-readout" class="zero-readout">ρ₁ = ½ + 14.135 i <span class="dim">· ahead</span></div>
+    <div class="hud-bottom"><span>zeros <b id="count-readout">0</b><span class="dim"> / 1000</span></span><span id="act-readout" class="act-label">I · Emergence</span></div>
+  </aside>
+
+  <main>
+    <section id="intro" class="intro" aria-labelledby="intro-title">
+      <div class="intro-content">
+        <p class="intro-news"><span class="news-dot" aria-hidden="true"></span><span><b>Nov 2026</b> · A machine-checked proof of the Riemann Hypothesis <a href="https://en.wikipedia.org/wiki/Alp%C3%B6ge%27s_proof_of_the_Riemann_hypothesis" target="_blank" rel="noopener">has been announced</a> (review ongoing). Every zero you’ll hear lies on Re(s)&nbsp;=&nbsp;½.</span></p>
+        <p class="eyebrow mono"><span></span> THE RIEMANN ZETA FUNCTION, IN SOUND <span></span></p>
+        <h1 id="intro-title">Music of<br>the <em>Primes</em><span class="title-period">.</span></h1>
+        <p class="intro-subtitle">A journey up Riemann’s critical line —<br class="mobile-break"> 1,000 zeros of ζ(s),<br class="desktop-break"> with the primes as bells.</p>
+        <button id="begin" class="begin" aria-label="Begin the three-minute composition">
+          <span class="begin-circle"><svg class="icon" aria-hidden="true"><use href="#icon-play"/></svg><span>Begin</span></span>
+        </button>
+        <p class="headphone-hint mono">Best with headphones <span>·</span> 3 min</p>
+      </div>
+    </section>
+
+    <aside class="prime-panel chrome" aria-label="Prime bell events">
+      <p class="eyebrow mono"><span class="prime-dot"></span> THE PRIMES, IN TIME</p>
+      <div class="prime-number mono" id="prime-readout">p <span class="dim">=</span> —</div>
+      <div class="twin-tag mono" id="twin-readout">LISTEN FOR THE DOUBLE STRIKE</div>
+      <div class="prime-ticker mono" id="prime-ticker" aria-hidden="true">2 <span>·</span> 3 <span>·</span> 5 <span>·</span> 7 <span>·</span> 11 <span>·</span> 13 <span class="dim">↗</span></div>
+    </aside>
+    <div class="journey-note chrome mono" aria-hidden="true"><span>Re(s) = ½</span><span>ASCENDING THROUGH THE INFINITE</span></div>
+
+    <section class="transport chrome" aria-label="Audio player">
+      <button id="play" class="icon-button play-button" aria-label="Play" title="Play / pause (Space)"><svg class="icon" aria-hidden="true"><use id="play-icon" href="#icon-play"/></svg></button>
+      <div class="timeline">
+        <div class="act-markers mono" aria-hidden="true"><span style="left:0">I</span><span style="left:8.3333%">II</span><span style="left:88.8889%">III</span></div>
+        <div class="seek-track"><div id="prime-ticks" class="prime-ticks" aria-hidden="true"></div><input id="seek" type="range" min="0" max="180" step="0.01" value="0" aria-label="Seek through composition" aria-valuetext="0 minutes 0 seconds"></div>
+      </div>
+      <output class="time mono" id="time-readout" for="seek">0:00 <span class="dim">/ 3:00</span></output>
+      <div class="volume-control"><button id="mute" class="icon-button" aria-label="Mute" aria-pressed="false" title="Mute (M)"><svg class="icon" aria-hidden="true"><use id="volume-icon" href="#icon-volume"/></svg></button><input id="volume" type="range" min="0" max="1" step="0.01" value="0.75" aria-label="Volume" aria-valuetext="75 percent"></div>
+      <div class="transport-divider" aria-hidden="true"></div>
+      <button id="download" class="download-button" aria-label="Download the full composition as WAV" title="Render 180 seconds as stereo WAV"><svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg><span id="download-label" class="mono">WAV</span></button>
+      <button id="info" class="icon-button" aria-label="How it works" aria-controls="info-drawer" aria-expanded="false" title="How it works (I)"><svg class="icon" aria-hidden="true"><use href="#icon-info"/></svg></button>
+      <button id="fullscreen" class="icon-button" aria-label="Enter fullscreen" title="Fullscreen (F)"><svg class="icon" aria-hidden="true"><use href="#icon-fullscreen"/></svg></button>
+    </section>
+  </main>
+
+  <p id="visual-notice" class="visual-notice mono" hidden></p>
+  <p id="status" class="status-message" role="status" aria-live="polite" hidden></p>
+  <div id="drawer-backdrop" class="drawer-backdrop" hidden></div>
+  <aside id="info-drawer" class="info-drawer" role="dialog" aria-modal="true" aria-labelledby="info-title" tabindex="-1" hidden>
+    <div class="drawer-header"><div><p class="eyebrow mono">THE MATHEMATICS OF LISTENING</p><h2 id="info-title">How it works</h2></div><button id="close-info" class="icon-button" aria-label="Close information" title="Close (Esc)"><svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg></button></div>
+    <p class="drawer-lead">The primes appear irregular. Beneath that surface is a structure you can hear.</p>
+    <div class="formula-card"><p class="eyebrow mono">RIEMANN’S EXPLICIT FORMULA</p><div class="formula">$$\psi(x) = x - \sum_\rho \frac{x^\rho}{\rho} - \log 2\pi - \tfrac12\log(1-x^{-2})$$</div><p>The nontrivial zeros describe oscillations in the distribution of primes. Here, those oscillations become a musical score.</p></div>
+    <section><p class="section-number mono">01 / PITCH</p><h3>Pitch from the zeros</h3><p>Each imaginary part γ<sub>k</sub> becomes a frequency:</p><div class="formula">$$f_k = f_{base}\cdot\gamma_k/\gamma_1$$</div><p>The first zero, γ₁ ≈ 14.1347, maps to C3 at 130.81 Hz. The others form an <em>inharmonic</em> spectrum: related by mathematics, without settling into a conventional chord.</p></section>
+    <section><p class="section-number mono">02 / WEIGHT</p><h3>Loudness from Riemann’s weights</h3><div class="formula">$$A_k = 1/\sqrt{0.25+\gamma_k^2}$$</div><p>Higher zeros speak more softly. Their amplitude follows the magnitude of the reciprocal zero, the weight that appears in the explicit formula.</p></section>
+    <section><p class="section-number mono">03 / SPACE</p><h3>A chord that slowly opens</h3><p>The first 100 voices enter as the camera passes their zeros. Each fades in over 3.5 seconds, with its own slow amplitude modulation, stereo position, and gently detuned chorus. A C2 drone grounds the chord; a widening filter and long reverb let it unfold.</p></section>
+    <section><p class="section-number mono">04 / RHYTHM</p><h3>The primes become bells</h3><div class="formula">$$T_p = 1 + 0.15p$$</div><p>Every prime through 1093 strikes an FM bell. The gaps between primes become gaps in time. Twin primes, two units apart, create a distinctive double strike, always 0.30 seconds apart. The second bell is brighter and answers from the opposite side.</p></section>
+    <section><p class="section-number mono">05 / THE JOURNEY</p><h3>Up the critical line</h3><p>Beyond the first 100 zeros, another 900 appear as short glints, folded by octaves into a comfortable register. We climb to Im(s) ≈ 1419 before the view widens and the sound recedes.</p><p>The field uses domain colouring of a <strong>zero-product approximation</strong> with a Riemann–Siegel θ phase. Contours wind around the zeros; particles gather at sounding wells; prime bells send ripples across the strip. This is an artistic rendering, not the exact ζ function.</p></section>
+    <section><p class="section-number mono">06 / WHY NOW</p><h3>A proof, announced</h3><p>On 20 November 2026 Levent Alpöge released a formal proof of the Riemann Hypothesis written in the Lean proof assistant. The Lean FRO and the Mathlib Initiative have certified that it compiles and states the canonical hypothesis; independent checks and a human-readable account are still in progress.</p><p>The 1,000 zeros in this piece were verified to lie on Re(s) = ½ long ago, numerically. If the proof stands, <em>every</em> nontrivial zero does: the chord never leaves the line.</p><p class="sources"><a href="https://en.wikipedia.org/wiki/Alp%C3%B6ge%27s_proof_of_the_Riemann_hypothesis" target="_blank" rel="noopener">Wikipedia: Alpöge’s proof</a> · <a href="https://github.com/nasqret/riemann-rev" target="_blank" rel="noopener">verification status</a></p></section>
+    <div class="act-list mono"><div><span>I · Emergence</span><span>0:00–0:15</span></div><div><span>II · Ascent</span><span>0:15–2:40</span></div><div><span>III · Horizon</span><span>2:40–3:00</span></div></div>
+    <p class="drawer-footer mono">1,000 ZEROS · 183 PRIMES · ONE CONTINUOUS JOURNEY</p>
+    <p class="drawer-links"><a href="https://github.com/mikasjp/music-of-the-primes" target="_blank" rel="noopener">Source on GitHub</a> · Tip: link to a moment with <code>?t=1:35</code></p>
+    <p class="keyboard-help"><kbd>Space</kbd> play / pause &nbsp; <kbd>←</kbd><kbd>→</kbd> seek<br><kbd>F</kbd> fullscreen &nbsp; <kbd>M</kbd> mute &nbsp; <kbd>I</kbd> info</p>
+  </aside>
+  <noscript><div class="noscript">Enable JavaScript to play the composition and explore the critical strip.</div></noscript>
+</body>
+</html>
