@@ -4,7 +4,7 @@
 immersive WebGL journey up the critical line Re(s) = ½, through the first 1,000 nontrivial zeros
 of ζ(s), with the primes ringing as bells.
 
-**Live:** https://music-of-the-primes.pages.dev
+**Live:** https://riemann.mikolaj-kaminski.com
 
 ## What you hear
 
